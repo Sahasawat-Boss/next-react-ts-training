@@ -1,48 +1,71 @@
-'use client';
+import React from 'react';
 
-import { useState, useEffect } from 'react';
-
-interface Data {
-  userId: string;
+type UserData = {
   id: number;
-  title: string;
-  body: string;
-}
-
-const Home = () => {
-  const [data, setData] = useState<Data[] | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-        const result = await res.json();
-        console.log('Fetched Data:', result);
-        setData(result);
-
-      } catch (error) {
-        console.log('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  return (
-    <div>
-      <h3>Next App</h3>
-      <br />
-      <ul>
-        {data?.map((val) => (
-          <li key={val.id}>
-            <h3>{val.title}</h3>
-            <p>{val.body}</p>
-            <br />
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+  fname: string;
+  lname: string;
+  username: string;
+  avatar: string;
 };
 
-export default Home;
+export default async function Page() {
+  let content: React.ReactNode;
+
+  try {
+    const res = await fetch('https://www.melivecode.com/api/users');
+
+    console.log('📡 Fetch response:', res);
+
+    if (!res.ok) {
+      console.error('❌ Fetch failed with status:', res.status);
+      throw new Error('Failed to fetch users');
+    }
+
+    const user: UserData[] = await res.json();
+    console.log('✅ User data:', user);
+
+    content = (
+      <div className="mt-6 space-y-6">
+        {user.map((users) => (
+          <div
+            key={users.id}
+            className="border p-4 rounded shadow-sm hover:shadow-md transition"
+          >
+            <h2 className="text-2xl font-bold mb-1">ID: {users.id}</h2>
+            <p className="text-gray-800">First Name: {users.fname}</p>
+            <p className="text-gray-800">Last Name: {users.lname}</p>
+            <p className="text-gray-800">Username: {users.username}</p>
+            <img
+              src={users.avatar}
+              alt={users.username}
+              className="w-24 h-24 rounded-full mt-4 border"
+            />
+          </div>
+        ))}
+      </div>
+    );
+  } catch (error: any) {
+    console.error('❌ Error during fetch or render:', error.message);
+
+    content = (
+      <div className="mt-6 p-4 bg-red-100 text-red-700 border border-red-400 rounded">
+        <strong>Error:</strong> {error.message || 'Unable to load user data.'}
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6">
+      <a
+        href="https://www.melivecode.com/api/users"
+        className="text-blue-500 text-xl underline"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        SRC: https://www.melivecode.com/api/users
+      </a>
+
+      {content}
+    </div>
+  );
+}
