@@ -1,4 +1,6 @@
 import InputContext from "./components/InputContext"
+import InputZComp from "./components/InputZComps"
+import DZInput from "./components/DisZInput"
 
 const Home = () => {
   return (
@@ -17,6 +19,8 @@ const Home = () => {
 
       <section>
         <InputContext />
+        <InputZComp/>
+        <DZInput/>
       </section>
     </main>
   )

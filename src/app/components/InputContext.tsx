@@ -8,7 +8,7 @@ const InputContext = () => {
         <div className='bg-white text-black p-10'>
             <input type="text" placeholder='Type Here'
                 className='border' onChange={(e) => setText(e.target.value)}/>
-                <p>{text}</p>
+                <p>Typed: {text}</p>
         </div>
     )
 }
