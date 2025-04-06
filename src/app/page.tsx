@@ -1,71 +1,25 @@
-import React from 'react';
+import InputContext from "./components/InputContext"
 
-type UserData = {
-  id: number;
-  fname: string;
-  lname: string;
-  username: string;
-  avatar: string;
-};
-
-export default async function Page() {
-  let content: React.ReactNode;
-
-  try {
-    const res = await fetch('https://www.melivecode.com/api/users');
-
-    console.log('📡 Fetch response:', res);
-
-    if (!res.ok) {
-      console.error('❌ Fetch failed with status:', res.status);
-      throw new Error('Failed to fetch users');
-    }
-
-    const user: UserData[] = await res.json();
-    console.log('✅ User data:', user);
-
-    content = (
-      <div className="mt-6 space-y-6">
-        {user.map((users) => (
-          <div
-            key={users.id}
-            className="border p-4 rounded shadow-sm hover:shadow-md transition"
-          >
-            <h2 className="text-2xl font-bold mb-1">ID: {users.id}</h2>
-            <p className="text-gray-800">First Name: {users.fname}</p>
-            <p className="text-gray-800">Last Name: {users.lname}</p>
-            <p className="text-gray-800">Username: {users.username}</p>
-            <img
-              src={users.avatar}
-              alt={users.username}
-              className="w-24 h-24 rounded-full mt-4 border"
-            />
-          </div>
-        ))}
-      </div>
-    );
-  } catch (error: any) {
-    console.error('❌ Error during fetch or render:', error.message);
-
-    content = (
-      <div className="mt-6 p-4 bg-red-100 text-red-700 border border-red-400 rounded">
-        <strong>Error:</strong> {error.message || 'Unable to load user data.'}
-      </div>
-    );
-  }
-
+const Home = () => {
   return (
-    <div className="p-6">
-      <a
-        href="https://www.melivecode.com/api/users"
-        className="text-blue-500 text-xl underline"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        SRC: https://www.melivecode.com/api/users
-      </a>
+    <main >
+      <div className='flex flex-col mx-16'>
+        <div className='text-4xl'>Crafting Digital Experiences</div>
+        <p className='text-sm'>From concept to code, we transform your vision into engaging, responsive, and powerful web solutions.</p>
 
-      {content}
-    </div>
-  );
+        <section className='flex gap-2.5 mt-6'>
+          <button className='bg-white text-black rounded-full p-1.5 px-4 text-xs'>Start Project</button>
+          <button className='rounded-full p-1.5 px-4 border text-xs'>Learn More</button>
+        </section>
+
+        <img src="https://graphio.co.th/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhero-image.7999c522.webp&w=1920&q=75" alt="Hero" className='mt-4' />
+      </div>
+
+      <section>
+        <InputContext />
+      </section>
+    </main>
+  )
 }
+
+export default Home
